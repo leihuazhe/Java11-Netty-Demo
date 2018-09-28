@@ -219,9 +219,6 @@ Java11 基于maven构建的简单的服务端客户端分离模块调用的例�
 │   │   │   └── resources
 │   │   │       └── logback.xml
 
-
-
-
 ```
 
 DEBUG 错误1:
@@ -229,6 +226,45 @@ DEBUG 错误1:
 - Reflective setAccessible(true) disabled
 
 TODO
+
+## 迁移注意事项
+### 1. JavaEE 模块被移除
+Java11 移除了 JavaEE 模块,所以很多诸如 javax JAXB 等已经被移除。
+如果旧版本的项目有依赖 Javaee的组件，需要单独加入 javaee-api
+```xml
+<dependency>
+    <groupId>javax</groupId>
+    <artifactId>javaee-api</artifactId>
+    <version>8.0</version>
+    
+</dependency>
+```
+
+### 2.模块化 api
+exports 和 exports to 指令
+exports 指令用于指定一个模块中哪些包对外是可访问的，而 exports…to 指令则用来限定哪些模块可以访问导出类，允许开发者通过逗号分隔的列表指定哪些模块及模块的哪些代码可以访问导出的包，这种方式也称为限定导出(qualified export)。
+
+use 指令
+use 指令用于指定一个模块所使用的服务，使模块成为服务的消费者，服务其实就是一个实现了某个接口或抽象类的对象。
+
+provides…with 指令
+该指令用于说明模块提供了某个服务的实现，因此模块也称为服务提供者。provides 后面跟接口名或抽象类名，与 use 指令后的名称一致，with 后面跟实现类该接口或抽象类的类名。
+
+open, opens, opens…to 指令
+在 Java 9 之前，我们可以通过反射技术来获取某个包下所有的类及其内部乘员的信息，即使是 private 类型我们也能获取到，所以类信息并不是真的与外界完全隔离的。而模块系统的主要目标之一就是实现强封装，默认情况下，除非显式地导出或声明某个类为 public 类型，那么模块中的类对外部都是不可见的，模块化要求我们对外部模块应最小限度地暴露包的范围。open 相关的指令就是用来限制在运行时哪些类可以被反射技术探测到。
+
+首先我们先看 opens 指令，语法如下：
+opens package
+opens 指令用于指定某个包下所有的 public 类都只能在运行时可被别的模块进行反射，并且该包下的所有的类及其乘员都可以通过反射进行访问。
+
+opens…to 指令，语法如下：
+opens package to modules
+该指令用于指定某些特定的模块才能在运行时对该模块下特定包下的 public 类进行反射操作，to 后面跟逗号分隔的模块名称。
+
+open 指令，语法如下：
+open module moduleName{
+}
+该指令用于指定外部模块可以对该模块下所有的类在运行时进行反射操作。
 
 
 

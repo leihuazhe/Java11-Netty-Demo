@@ -42,7 +42,7 @@ public class Main {
                         if (ex != null) {
                             logger.info(ex.getMessage(), ex);
                         }
-                        logger.info("seq为 {} 的请求,服务端返回结果为:{}", seq, result.toString());
+                        logger.info("seq为 {} 的请求,服务端返回结果为:\n{}", seq, result.toString());
                     });
                 } else {
                     int seq = SEQ_ID_ATOMIC.incrementAndGet();

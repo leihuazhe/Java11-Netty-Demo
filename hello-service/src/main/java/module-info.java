@@ -1,7 +1,7 @@
 /**
  * @author maple 2018.09.27 上午9:53
  */
-module two {
+module helo.service {
     requires slf4j.api;
     requires io.netty.all;
     requires gson;

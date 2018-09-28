@@ -6,5 +6,7 @@ module hello.client {
     requires io.netty.all;
     requires slf4j.api;
     requires hello.common;
+
     requires gson;
+    uses com.google.gson.Gson;
 }
