@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.maple</groupId>
-    <artifactId>maple-netty-java11</artifactId>
+    <artifactId>netty-java11-demo</artifactId>
     <packaging>pom</packaging>
     <version>1.0</version>
     <modules>
